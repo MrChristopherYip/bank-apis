@@ -1,8 +1,11 @@
 package com.flexon.springboot.bankapis;
 
+import org.springframework.stereotype.Component;
+
 import java.sql.*;
 import java.util.ArrayList;
 
+@Component
 public class BankAccountsDAO {
     private final String url = "jdbc:mysql://mysql-db-uswest1.cmsymc235ooy.us-west-1.rds.amazonaws.com:3306/flexon_bank_db";
     private final String user = "admin";
@@ -91,7 +94,9 @@ public class BankAccountsDAO {
     }
 
     // Update
-    public void updateAccount(BankAccount account) {
+    public boolean updateAccount(BankAccount account) {
+        boolean updated = false;
+
         String sql = "UPDATE accounts " +
                      "SET balance = ?, customer_name = ?, email = ?, phone_num = ? " +
                      "WHERE account_num = ?";
@@ -105,10 +110,12 @@ public class BankAccountsDAO {
             pstmt.setString(4, account.getPhoneNum());
             pstmt.setInt(5, account.getAccountNum());
 
-            pstmt.executeUpdate();
+            if (pstmt.executeUpdate() > 0)
+                updated = true;
         } catch (SQLException e) {
             System.out.println(e.getMessage());
         }
+        return updated;
     }
 
     // Delete

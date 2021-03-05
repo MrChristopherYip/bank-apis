@@ -8,6 +8,8 @@ public class BankAccount {
     private String email;
     private String phoneNum;
 
+    private BankAccount() {}
+
     public BankAccount(int accountNum, double balance, String customerName, String email, String phoneNum) {
         this.accountNum = accountNum;
         this.balance = balance;
